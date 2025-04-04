@@ -8,6 +8,10 @@ const ListaCompras = () => {
   const [editandoIndex, setEditandoIndex] = useState(null);
   const [ultimaAlteracao, setUltimaAlteracao] = useState("");
 
+  const [nomeLista, setNomeLista] = useState("Lista Padrão");
+  const [listasDisponiveis, setListasDisponiveis] = useState([]);
+
+  // Atualiza relógio
   useEffect(() => {
     const intervalo = setInterval(() => {
       setHoraAtual(new Date().toLocaleTimeString("pt-BR"));
@@ -15,14 +19,28 @@ const ListaCompras = () => {
     return () => clearInterval(intervalo);
   }, []);
 
+  // Carrega listas disponíveis
   useEffect(() => {
-    const listaSalva = JSON.parse(localStorage.getItem("listaDeCompras")) || [];
-    setItens(listaSalva);
+    const listasSalvas = JSON.parse(localStorage.getItem("todasListas")) || [];
+    setListasDisponiveis(listasSalvas);
   }, []);
 
+  // Carrega a lista atual
   useEffect(() => {
-    localStorage.setItem("listaDeCompras", JSON.stringify(itens));
+    const listaAtual = JSON.parse(localStorage.getItem(nomeLista)) || [];
+    setItens(listaAtual);
+  }, [nomeLista]);
+
+  // Atualiza a lista atual no localStorage
+  useEffect(() => {
+    localStorage.setItem(nomeLista, JSON.stringify(itens));
     setUltimaAlteracao(new Date().toLocaleString("pt-BR"));
+
+    if (!listasDisponiveis.includes(nomeLista)) {
+      const novasListas = [...listasDisponiveis, nomeLista];
+      setListasDisponiveis(novasListas);
+      localStorage.setItem("todasListas", JSON.stringify(novasListas));
+    }
   }, [itens]);
 
   const adicionarItem = () => {
@@ -43,7 +61,18 @@ const ListaCompras = () => {
   };
 
   const calcularTotal = () => {
-    return itens.reduce((total, item) => total + item.quantidade * item.preco, 0).toFixed(2);
+    return itens.reduce((total, item) => {
+      const preco = typeof item.preco === "number" ? item.preco : 0;
+      return total + (item.quantidade * preco);
+    }, 0).toFixed(2);
+  };
+
+  const criarNovaLista = () => {
+    const nome = prompt("Digite o nome da nova lista:");
+    if (nome && !listasDisponiveis.includes(nome)) {
+      setNomeLista(nome);
+      setItens([]);
+    }
   };
 
   return (
@@ -51,6 +80,16 @@ const ListaCompras = () => {
       <h2>Lista de Compras 🛒</h2>
       <div className="relogio-digital">🕒 Hora Atual: {horaAtual}</div>
       {ultimaAlteracao && <p className="ultima-alteracao">Última alteração: {ultimaAlteracao}</p>}
+
+      <div className="lista-selecao">
+        <label>Selecionar lista:</label>
+        <select value={nomeLista} onChange={(e) => setNomeLista(e.target.value)}>
+          {listasDisponiveis.map((lista, index) => (
+            <option key={index} value={lista}>{lista}</option>
+          ))}
+        </select>
+        <button onClick={criarNovaLista}>➕ Nova Lista</button>
+      </div>
 
       <div className="input-container">
         <input
@@ -105,7 +144,7 @@ const ListaCompras = () => {
             ) : (
               <>
                 <span onClick={() => setEditandoIndex(index)}>
-                  {item.nome} - {item.quantidade}x - R$ {item.preco.toFixed(2)}
+                  {item.nome} - {item.quantidade}x - R$ {item.preco?.toFixed(2)}
                 </span>
                 <button onClick={() => setEditandoIndex(index)}>✏️ Editar</button>
               </>

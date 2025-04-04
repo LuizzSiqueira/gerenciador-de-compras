@@ -81,4 +81,26 @@
     color: blue;
   }
   
+  .botao-nova-lista {
+    margin: 10px 0;
+    padding: 6px 12px;
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  
+  .botao-nova-lista:hover {
+    background-color: #c82333;
+  }
+
+  .lista-selecao {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
   
