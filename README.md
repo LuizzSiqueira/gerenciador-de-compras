@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Gerenciador de Compras 📋
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📌 Sobre o Projeto
+O **Gerenciador de Compras** é uma aplicação web desenvolvida em **React JS** que permite criar, gerenciar e editar listas de compras de forma eficiente. O sistema possibilita:
 
-## Available Scripts
+- Adicionar e editar itens com nome, quantidade e preço;
+- Somar automaticamente o valor total da compra;
+- Criar e gerenciar múltiplas listas de compras;
+- Salvar os dados no **LocalStorage** para persistência;
+- Exibir um relógio digital e data da última alteração;
+- Interface intuitiva e responsiva para uma melhor experiência do usuário.
 
-In the project directory, you can run:
+## 🚀 Tecnologias Utilizadas
 
-### `npm start`
+- **React JS** - Biblioteca JavaScript para construção de interfaces interativas;
+- **CSS3** - Estilização personalizada com um tema azul;
+- **LocalStorage** - Armazena listas de compras localmente;
+- **JavaScript (ES6+)** - Manipulação de estados e eventos;
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 🎯 Funcionalidades Principais
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+- 📌 **Criação de Listas**: O usuário pode criar novas listas e nomeá-las.
+- ✏️ **Edição de Itens**: Cada item pode ser editado diretamente na interface.
+- ➕ **Soma de Quantidades**: Caso um item já exista, o sistema pergunta se deseja somar as quantidades.
+- 🗑️ **Exclusão de Itens**: Possibilidade de remover itens da lista.
+- 💰 **Cálculo do Total**: Exibe o valor total da lista de compras.
+- 🕒 **Relógio Digital**: Mostra a hora atualizada em tempo real.
+- 🗂️ **Persistência de Dados**: Os dados são salvos automaticamente no **LocalStorage**.
 
-### `npm test`
+## 🛠️ Como Rodar o Projeto
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 1️⃣ Clonar o Repositório:
+```bash
+git clone https://github.com/seu-usuario/gerenciador-de-compras.git
+```
 
-### `npm run build`
+### 2️⃣ Acessar a Pasta do Projeto:
+```bash
+cd gerenciador-de-compras
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 3️⃣ Instalar as Dependências:
+```bash
+npm install
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### 4️⃣ Iniciar o Servidor de Desenvolvimento:
+```bash
+npm start
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+O projeto será aberto no navegador no endereço:
+```
+http://localhost:3000
+```
 
-### `npm run eject`
+## 📬 Contato
+Se tiver dúvidas ou sugestões, entre em contato:
+- 📧 Email: luizvalente.siqueira@gmail.com
+- 🔗 LinkedIn: [LuizSiqueira](https://www.linkedin.com/in/luiz-siqueira-4841821a6/)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
