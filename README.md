@@ -1,7 +1,3 @@
-Claro! Aqui está a versão atualizada do seu README com o ajuste solicitado:
-
----
-
 # Gerenciador de Compras 📋
 
 ## 📌 Sobre o Projeto
