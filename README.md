@@ -2,31 +2,32 @@
 
 ## 📌 Sobre o Projeto
 
-O **Gerenciador de Compras** é uma aplicação web desenvolvida em **React JS** que permite criar, gerenciar e editar listas de compras de forma eficiente. O sistema possibilita:
+O **Gerenciador de Compras** é uma aplicação web desenvolvida em **React JS** que permite criar, gerenciar e editar listas de compras de forma eficiente. Agora com **integração ao Firebase Firestore**, todos os dados são salvos na nuvem com segurança e acessibilidade.
 
-- Adicionar e editar itens com nome, quantidade e preço;
-- Somar automaticamente o valor total da compra;
-- Criar e gerenciar múltiplas listas de compras;
-- Salvar os dados no **LocalStorage** para persistência;
-- Exibir um relógio digital e data da última alteração;
-- Interface intuitiva e responsiva para uma melhor experiência do usuário.
+### Principais recursos:
+
+- Adição e edição de itens com nome, quantidade e preço;
+- Cálculo automático do valor total da compra;
+- Criação e gerenciamento de múltiplas listas de compras;
+- Armazenamento dos dados na nuvem com Firebase;
+- Exibição da hora atual e da data da última modificação;
+- Interface moderna, intuitiva e responsiva.
 
 ## 🚀 Tecnologias Utilizadas
 
-- **React JS** – Biblioteca JavaScript para construção de interfaces interativas;
-- **CSS3** – Estilização personalizada com um tema azul;
-- **LocalStorage** – Armazena listas de compras localmente;
-- **JavaScript (ES6+)** – Manipulação de estados e eventos;
+- **React JS** – Interface interativa e reativa;
+- **CSS3** – Estilização com tema visual limpo e responsivo;
+- **Firebase Firestore** – Banco de dados em tempo real com persistência em nuvem;
+- **JavaScript (ES6+)** – Lógica da aplicação e manipulação de dados.
 
-## 🎯 Funcionalidades Principais
+## 🎯 Funcionalidades
 
-- 📌 **Criação de Listas**: O usuário pode criar novas listas e nomeá-las;
-- ✏️ **Edição de Itens**: Cada item pode ser editado diretamente na interface;
-- ➕ **Soma de Quantidades**: Caso um item já exista, o sistema pergunta se deseja somar as quantidades;
-- 🗑️ **Exclusão de Itens**: Possibilidade de remover itens da lista;
-- 💰 **Cálculo do Total**: Exibe o valor total da lista de compras;
-- 🕒 **Relógio Digital**: Mostra a hora atualizada em tempo real;
-- 🗂️ **Persistência de Dados**: Os dados são salvos automaticamente no **LocalStorage**.
+- 📌 **Criação de Listas**: Crie quantas listas quiser, nomeando cada uma de forma personalizada;
+- ✏️ **Edição de Itens**: Edite nome, quantidade e preço dos itens diretamente na interface;
+- 🗑️ **Exclusão de Itens**: Remova facilmente qualquer item da lista;
+- 💰 **Total da Compra**: Veja o valor total da lista calculado automaticamente;
+- 🕒 **Relógio Digital**: Exibe a hora atualizada em tempo real;
+- ☁️ **Persistência em Nuvem**: Dados sincronizados e salvos no Firestore para acesso de qualquer dispositivo.
 
 ## 🛠️ Como Rodar o Projeto
 
@@ -48,11 +49,6 @@ npm install
 ### 4️⃣ Iniciar o Servidor de Desenvolvimento:
 ```bash
 npm start
-```
-
-O projeto será aberto no navegador no endereço:
-```
-http://localhost:3000
 ```
 
 ## 📬 Contato
