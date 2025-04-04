@@ -1,4 +1,15 @@
 import React, { useState, useEffect } from "react";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  setDoc,
+  serverTimestamp,
+} from "firebase/firestore";
+import { db } from "./firebase";
 import "./ListaCompras.css";
 
 const ListaCompras = () => {
@@ -7,11 +18,10 @@ const ListaCompras = () => {
   const [itens, setItens] = useState([]);
   const [editandoIndex, setEditandoIndex] = useState(null);
   const [ultimaAlteracao, setUltimaAlteracao] = useState("");
-
-  const [nomeLista, setNomeLista] = useState("Lista Padrão");
+  const [nomeLista, setNomeLista] = useState("ListaPadrao");
   const [listasDisponiveis, setListasDisponiveis] = useState([]);
 
-  // Atualiza relógio
+  // Relógio digital
   useEffect(() => {
     const intervalo = setInterval(() => {
       setHoraAtual(new Date().toLocaleTimeString("pt-BR"));
@@ -19,59 +29,74 @@ const ListaCompras = () => {
     return () => clearInterval(intervalo);
   }, []);
 
-  // Carrega listas disponíveis
+  // Buscar nomes das listas
   useEffect(() => {
-    const listasSalvas = JSON.parse(localStorage.getItem("todasListas")) || [];
-    setListasDisponiveis(listasSalvas);
+    const buscarListas = async () => {
+      const snapshot = await getDocs(collection(db, "listas"));
+      const nomes = snapshot.docs.map((doc) => doc.id);
+      setListasDisponiveis(nomes.length ? nomes : ["ListaPadrao"]);
+    };
+    buscarListas();
   }, []);
 
-  // Carrega a lista atual
+  // Carregar os itens da lista atual
   useEffect(() => {
-    const listaAtual = JSON.parse(localStorage.getItem(nomeLista)) || [];
-    setItens(listaAtual);
+    const carregarItens = async () => {
+      const snapshot = await getDocs(collection(db, "listas", nomeLista, "itens"));
+      const dados = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+      setItens(dados);
+      setUltimaAlteracao(new Date().toLocaleString("pt-BR"));
+    };
+    carregarItens();
   }, [nomeLista]);
 
-  // Atualiza a lista atual no localStorage
-  useEffect(() => {
-    localStorage.setItem(nomeLista, JSON.stringify(itens));
-    setUltimaAlteracao(new Date().toLocaleString("pt-BR"));
-
-    if (!listasDisponiveis.includes(nomeLista)) {
-      const novasListas = [...listasDisponiveis, nomeLista];
-      setListasDisponiveis(novasListas);
-      localStorage.setItem("todasListas", JSON.stringify(novasListas));
-    }
-  }, [itens]);
-
-  const adicionarItem = () => {
+  const adicionarItem = async () => {
     if (!novoItem.nome.trim()) return;
-    setItens([...itens, novoItem]);
+    const item = {
+      ...novoItem,
+      quantidade: novoItem.quantidade || 1,
+      preco: novoItem.preco || 0,
+    };
+    const docRef = await addDoc(collection(db, "listas", nomeLista, "itens"), item);
+    setItens([...itens, { ...item, id: docRef.id }]);
     setNovoItem({ nome: "", quantidade: 1, preco: 0 });
+    await setDoc(doc(db, "listas", nomeLista), { atualizadoEm: serverTimestamp() }, { merge: true });
   };
 
-  const atualizarItem = (index, key, value) => {
-    const novosItens = [...itens];
-    novosItens[index][key] = value;
-    setItens(novosItens);
+  const atualizarItem = async (index, key, value) => {
+    const item = itens[index];
+    const atualizados = [...itens];
+    atualizados[index][key] = value;
+    setItens(atualizados);
+    const ref = doc(db, "listas", nomeLista, "itens", item.id);
+    await updateDoc(ref, { ...item, [key]: value });
+    await setDoc(doc(db, "listas", nomeLista), { atualizadoEm: serverTimestamp() }, { merge: true });
   };
 
-  const excluirItem = (index) => {
-    const novosItens = itens.filter((_, i) => i !== index);
-    setItens(novosItens);
+  const excluirItem = async (index) => {
+    const item = itens[index];
+    await deleteDoc(doc(db, "listas", nomeLista, "itens", item.id));
+    setItens(itens.filter((_, i) => i !== index));
+    await setDoc(doc(db, "listas", nomeLista), { atualizadoEm: serverTimestamp() }, { merge: true });
   };
 
   const calcularTotal = () => {
     return itens.reduce((total, item) => {
       const preco = typeof item.preco === "number" ? item.preco : 0;
-      return total + (item.quantidade * preco);
+      return total + item.quantidade * preco;
     }, 0).toFixed(2);
   };
 
-  const criarNovaLista = () => {
+  const criarNovaLista = async () => {
     const nome = prompt("Digite o nome da nova lista:");
     if (nome && !listasDisponiveis.includes(nome)) {
+      await setDoc(doc(db, "listas", nome), {
+        criadoEm: serverTimestamp(),
+        atualizadoEm: serverTimestamp(),
+      });
       setNomeLista(nome);
       setItens([]);
+      setListasDisponiveis([...listasDisponiveis, nome]);
     }
   };
 
@@ -79,13 +104,17 @@ const ListaCompras = () => {
     <div className="container">
       <h2>Lista de Compras 🛒</h2>
       <div className="relogio-digital">🕒 Hora Atual: {horaAtual}</div>
-      {ultimaAlteracao && <p className="ultima-alteracao">Última alteração: {ultimaAlteracao}</p>}
+      {ultimaAlteracao && (
+        <p className="ultima-alteracao">Última alteração: {ultimaAlteracao}</p>
+      )}
 
       <div className="lista-selecao">
         <label>Selecionar lista:</label>
         <select value={nomeLista} onChange={(e) => setNomeLista(e.target.value)}>
           {listasDisponiveis.map((lista, index) => (
-            <option key={index} value={lista}>{lista}</option>
+            <option key={index} value={lista}>
+              {lista}
+            </option>
           ))}
         </select>
         <button onClick={criarNovaLista}>➕ Nova Lista</button>
@@ -102,7 +131,9 @@ const ListaCompras = () => {
           type="number"
           min="1"
           value={novoItem.quantidade}
-          onChange={(e) => setNovoItem({ ...novoItem, quantidade: parseInt(e.target.value) })}
+          onChange={(e) =>
+            setNovoItem({ ...novoItem, quantidade: parseInt(e.target.value) || 1 })
+          }
         />
         <input
           type="number"
@@ -110,14 +141,16 @@ const ListaCompras = () => {
           step="0.01"
           placeholder="Preço R$"
           value={novoItem.preco}
-          onChange={(e) => setNovoItem({ ...novoItem, preco: parseFloat(e.target.value) || 0 })}
+          onChange={(e) =>
+            setNovoItem({ ...novoItem, preco: parseFloat(e.target.value) || 0 })
+          }
         />
         <button onClick={adicionarItem}>Adicionar</button>
       </div>
 
       <ul>
         {itens.map((item, index) => (
-          <li key={index}>
+          <li key={item.id}>
             {editandoIndex === index ? (
               <>
                 <input
@@ -129,16 +162,22 @@ const ListaCompras = () => {
                   type="number"
                   min="1"
                   value={item.quantidade}
-                  onChange={(e) => atualizarItem(index, "quantidade", parseInt(e.target.value))}
+                  onChange={(e) =>
+                    atualizarItem(index, "quantidade", parseInt(e.target.value) || 1)
+                  }
                 />
                 <input
                   type="number"
                   min="0"
                   step="0.01"
                   value={item.preco}
-                  onChange={(e) => atualizarItem(index, "preco", parseFloat(e.target.value) || 0)}
+                  onChange={(e) =>
+                    atualizarItem(index, "preco", parseFloat(e.target.value) || 0)
+                  }
                 />
-                <button className="botao-confirmar" onClick={() => setEditandoIndex(null)}>✅ Confirmar</button>
+                <button className="botao-confirmar" onClick={() => setEditandoIndex(null)}>
+                  ✅
+                </button>
                 <button onClick={() => excluirItem(index)}>❌</button>
               </>
             ) : (
@@ -146,7 +185,7 @@ const ListaCompras = () => {
                 <span onClick={() => setEditandoIndex(index)}>
                   {item.nome} - {item.quantidade}x - R$ {item.preco?.toFixed(2)}
                 </span>
-                <button onClick={() => setEditandoIndex(index)}>✏️ Editar</button>
+                <button onClick={() => setEditandoIndex(index)}>✏️</button>
               </>
             )}
           </li>
