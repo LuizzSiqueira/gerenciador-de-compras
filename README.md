@@ -11,7 +11,10 @@ O **Gerenciador de Compras** é uma aplicação web desenvolvida em **React JS**
 - Criação e gerenciamento de múltiplas listas de compras;
 - Armazenamento dos dados na nuvem com Firebase;
 - Exibição da hora atual e da data da última modificação;
-- Interface moderna, intuitiva e responsiva.
+- Interface moderna, intuitiva e responsiva;
+- **Controle de Orçamento por Lista** (New);
+- **Cálculo do Saldo Restante** (New);
+- **Persistência do Orçamento na Nuvem** (New);
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -27,7 +30,10 @@ O **Gerenciador de Compras** é uma aplicação web desenvolvida em **React JS**
 - 🗑️ **Exclusão de Itens**: Remova facilmente qualquer item da lista;
 - 💰 **Total da Compra**: Veja o valor total da lista calculado automaticamente;
 - 🕒 **Relógio Digital**: Exibe a hora atualizada em tempo real;
-- ☁️ **Persistência em Nuvem**: Dados sincronizados e salvos no Firestore para acesso de qualquer dispositivo.
+- ☁️ **Persistência em Nuvem**: Dados sincronizados e salvos no Firestore para acesso de qualquer dispositivo;
+- 🧮 **Orçamento por Lista**: Defina um valor máximo para seus gastos em cada lista (New);
+- 📉 **Saldo Restante**: Veja quanto ainda pode gastar com base no orçamento definido (New);
+- 🔄 **Orçamento Salvo na Nuvem**: O orçamento de cada lista fica salvo com segurança no Firestore (New);
 
 ## 🛠️ Como Rodar o Projeto
 
