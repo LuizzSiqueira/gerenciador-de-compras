@@ -20,8 +20,8 @@ const ListaCompras = () => {
   const [ultimaAlteracao, setUltimaAlteracao] = useState("");
   const [nomeLista, setNomeLista] = useState("ListaPadrao");
   const [listasDisponiveis, setListasDisponiveis] = useState([]);
+  const [tema, setTema] = useState("light");
 
-  // Relógio digital
   useEffect(() => {
     const intervalo = setInterval(() => {
       setHoraAtual(new Date().toLocaleTimeString("pt-BR"));
@@ -29,7 +29,6 @@ const ListaCompras = () => {
     return () => clearInterval(intervalo);
   }, []);
 
-  // Buscar nomes das listas
   useEffect(() => {
     const buscarListas = async () => {
       const snapshot = await getDocs(collection(db, "listas"));
@@ -39,7 +38,6 @@ const ListaCompras = () => {
     buscarListas();
   }, []);
 
-  // Carregar os itens da lista atual
   useEffect(() => {
     const carregarItens = async () => {
       const snapshot = await getDocs(collection(db, "listas", nomeLista, "itens"));
@@ -49,6 +47,14 @@ const ListaCompras = () => {
     };
     carregarItens();
   }, [nomeLista]);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", tema);
+  }, [tema]);
+
+  const alternarTema = () => {
+    setTema((prev) => (prev === "light" ? "dark" : "light"));
+  };
 
   const adicionarItem = async () => {
     if (!novoItem.nome.trim()) return;
@@ -102,6 +108,10 @@ const ListaCompras = () => {
 
   return (
     <div className="container">
+      <button onClick={alternarTema} style={{ marginBottom: "10px" }}>
+        {tema === "light" ? "🌙 Tema Escuro" : "☀️ Tema Claro"}
+      </button>
+
       <h2>Lista de Compras 🛒</h2>
       <div className="relogio-digital">🕒 Hora Atual: {horaAtual}</div>
       {ultimaAlteracao && (
@@ -117,7 +127,7 @@ const ListaCompras = () => {
             </option>
           ))}
         </select>
-        <button onClick={criarNovaLista}>➕ Nova Lista</button>
+        <button className="botao-nova-lista" onClick={criarNovaLista}>➕ Nova Lista</button>
       </div>
 
       <div className="input-container">
